@@ -9,8 +9,14 @@
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
-    "build": "cd server && npm install",
-    "seed": "cd server && npm run seed"
+    "build": "npm install && cd server && npm install",
+    "seed": "node server/seed.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.6.1"
   },
   "private": true
 }

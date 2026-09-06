@@ -678,9 +678,10 @@ app.use('/icons', express.static(path.join(__dirname, '..', 'icons')));
 
 // ---------------------------------------------------------------------------
 const PORT = Number(process.env.PORT || 4310);
+const HOST = process.env.HOST || '0.0.0.0';
 const { server, protocol } = createServer(app);
-server.listen(PORT, () => {
-  const base = `${protocol}://localhost:${PORT}`;
+server.listen(PORT, HOST, () => {
+  const base = `${protocol}://${HOST === '0.0.0.0' ? 'localhost' : HOST}:${PORT}`;
   console.log(`HADJ Fleet API   → ${base}/api/fleet   (auth requise)`);
   console.log(`Front-end        → ${base}/`);
   console.log(`API docs         → ${base}/api/docs`);
