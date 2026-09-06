@@ -1,0 +1,76 @@
+{
+  "resourceType": "Bundle",
+  "type": "collection",
+  "timestamp": "2026-09-01T08:00:00Z",
+  "entry": [
+    {
+      "fullUrl": "Patient/P-8492",
+      "resource": {
+        "resourceType": "Patient",
+        "id": "P-8492",
+        "identifier": [{ "system": "urn:oid:1.2.250.1.213.1.4.8", "value": "P-8492" }],
+        "active": true
+      }
+    },
+    {
+      "fullUrl": "ServiceRequest/HD-P-8492-2026-09",
+      "resource": {
+        "resourceType": "ServiceRequest",
+        "id": "HD-P-8492-2026-09",
+        "status": "active",
+        "intent": "order",
+        "code": { "text": "Hémodialyse chronique", "coding": [{ "system": "http://snomed.info/sct", "code": "302497006", "display": "Hemodialysis" }] },
+        "subject": { "reference": "Patient/P-8492" },
+        "occurrenceTiming": { "repeat": { "duration": 4, "durationUnit": "h", "frequency": 3, "period": 1, "periodUnit": "wk" } },
+        "requester": { "display": "Dr. N. Amrani (Néphrologie)" },
+        "authoredOn": "2026-08-15"
+      }
+    },
+    {
+      "fullUrl": "MedicationRequest/HD-P-8492-anticoag",
+      "resource": {
+        "resourceType": "MedicationRequest",
+        "id": "HD-P-8492-anticoag",
+        "status": "active",
+        "intent": "order",
+        "medicationCodeableConcept": {
+          "text": "Héparine non fractionnée",
+          "coding": [{ "system": "http://www.whocc.no/atc", "code": "B01AB01", "display": "heparin" }]
+        },
+        "subject": { "reference": "Patient/P-8492" },
+        "dosageInstruction": [{
+          "text": "Bolus initial puis entretien selon protocole anticoagulation régionale",
+          "route": { "text": "Voie veineuse (ligne artérielle du circuit)" },
+          "doseAndRate": [{ "doseQuantity": { "value": 2500, "unit": "UI", "system": "http://unitsofmeasure.org", "code": "U" } }]
+        }],
+        "authoredOn": "2026-08-15"
+      }
+    },
+    {
+      "fullUrl": "Observation/HD-P-8492-dry-weight",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "HD-P-8492-dry-weight",
+        "status": "final",
+        "category": [{ "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "therapy" }] }],
+        "code": { "text": "Poids sec cible", "coding": [{ "system": "http://hadj.local/fhir/CodeSystem/dialysis-parameter", "code": "dry-weight", "display": "Target dry weight" }] },
+        "subject": { "reference": "Patient/P-8492" },
+        "effectiveDateTime": "2026-08-28",
+        "valueQuantity": { "value": 68.5, "unit": "kg", "system": "http://unitsofmeasure.org", "code": "kg" }
+      }
+    },
+    {
+      "fullUrl": "Observation/HD-P-8492-target-bfr",
+      "resource": {
+        "resourceType": "Observation",
+        "id": "HD-P-8492-target-bfr",
+        "status": "final",
+        "category": [{ "coding": [{ "system": "http://terminology.hl7.org/CodeSystem/observation-category", "code": "therapy" }] }],
+        "code": { "text": "Débit sanguin cible", "coding": [{ "system": "http://hadj.local/fhir/CodeSystem/dialysis-parameter", "code": "target-blood-flow", "display": "Target blood flow rate" }] },
+        "subject": { "reference": "Patient/P-8492" },
+        "effectiveDateTime": "2026-08-28",
+        "valueQuantity": { "value": 350, "unit": "mL/min", "system": "http://unitsofmeasure.org", "code": "mL/min" }
+      }
+    }
+  ]
+}

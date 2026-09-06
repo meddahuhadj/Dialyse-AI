@@ -1,0 +1,16 @@
+{
+  "name": "dialyse-ai",
+  "version": "1.0.0",
+  "description": "HADJ Dialysis Intelligence Platform — Copilote IA Hémodialyse & PWA",
+  "main": "server/index.js",
+  "engines": {
+    "node": ">=22.5.0"
+  },
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "build": "cd server && npm install",
+    "seed": "cd server && npm run seed"
+  },
+  "private": true
+}

@@ -1,0 +1,13 @@
+node_modules/
+connectors/connectors.config.json
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+.env
+
+# Phase 4 — secrets & keys (never commit)
+.jwt-secret
+.secret-key
+secrets.enc.json
+certs/*.pem

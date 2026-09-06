@@ -1,0 +1,110 @@
+{
+  "_comment": "Données de départ du backend HADJ (ancien FLEET / AUDIT_LOG figés du front-end, retirés du HTML en Phase 2). Source de vérité du seed. seed.js retombe sur l'extraction du HTML si ce fichier est absent.",
+  "fleet": [
+    {
+      "id": "HD-01", "model": "Fresenius Medical Care 5008S CorDiax", "serial": "FMC-5008-883492",
+      "room": "ROOM_A", "bed": "Poste 01", "status": "NORMAL", "sessionActive": true, "patientId": "P-8492",
+      "hours": 7842, "sessions": 2184, "alarms30d": 8, "nextMaintenanceDays": 45, "healthScore": 94,
+      "healthBreakdown": { "reliability": 96, "alarmHistory": 92, "maintenance": 95, "stability": 94, "utilization": 93 },
+      "bfr": 350, "ufr": 600, "ufv": 1.75, "targetUfv": 2.4, "part": -142, "pven": 165, "tmp": 110, "cond": 14.0, "temp": 36.5,
+      "durationElapsed": "02h 45m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-02", "model": "Fresenius Medical Care 5008S CorDiax", "serial": "FMC-5008-883493",
+      "room": "ROOM_A", "bed": "Poste 02", "status": "NORMAL", "sessionActive": true, "patientId": "P-3104",
+      "hours": 6910, "sessions": 1940, "alarms30d": 5, "nextMaintenanceDays": 60, "healthScore": 96,
+      "healthBreakdown": { "reliability": 97, "alarmHistory": 96, "maintenance": 98, "stability": 95, "utilization": 94 },
+      "bfr": 320, "ufr": 550, "ufv": 1.40, "targetUfv": 2.2, "part": -130, "pven": 148, "tmp": 95, "cond": 14.1, "temp": 36.6,
+      "durationElapsed": "02h 30m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-03", "model": "Baxter Artis Physio", "serial": "BAX-ART-104921",
+      "room": "ROOM_A", "bed": "Poste 03", "status": "MONITORING", "sessionActive": true, "patientId": "P-5529",
+      "hours": 8430, "sessions": 2310, "alarms30d": 14, "nextMaintenanceDays": 28, "healthScore": 84,
+      "healthBreakdown": { "reliability": 85, "alarmHistory": 78, "maintenance": 88, "stability": 82, "utilization": 87 },
+      "bfr": 300, "ufr": 750, "ufv": 2.10, "targetUfv": 2.8, "part": -165, "pven": 188, "tmp": 160, "cond": 13.9, "temp": 36.5,
+      "trendWarning": "Pression veineuse en hausse continue (+25 mmHg en 30m) - Suspicion plicature ou hématome abord",
+      "durationElapsed": "03h 05m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-04", "model": "Baxter Artis Physio", "serial": "BAX-ART-104922",
+      "room": "ROOM_A", "bed": "Poste 04", "status": "NORMAL", "sessionActive": true, "patientId": "P-9912",
+      "hours": 9120, "sessions": 2540, "alarms30d": 11, "nextMaintenanceDays": 14, "healthScore": 89,
+      "healthBreakdown": { "reliability": 91, "alarmHistory": 86, "maintenance": 84, "stability": 92, "utilization": 92 },
+      "bfr": 340, "ufr": 620, "ufv": 1.65, "targetUfv": 2.3, "part": -138, "pven": 155, "tmp": 105, "cond": 14.0, "temp": 36.4,
+      "durationElapsed": "02h 40m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-05", "model": "Nipro Surdial X", "serial": "NIP-SUR-773102",
+      "room": "ROOM_B", "bed": "Poste 05", "status": "NORMAL", "sessionActive": true, "patientId": "P-1120",
+      "hours": 5420, "sessions": 1530, "alarms30d": 4, "nextMaintenanceDays": 90, "healthScore": 97,
+      "healthBreakdown": { "reliability": 98, "alarmHistory": 97, "maintenance": 99, "stability": 96, "utilization": 95 },
+      "bfr": 380, "ufr": 700, "ufv": 2.15, "targetUfv": 2.6, "part": -125, "pven": 160, "tmp": 115, "cond": 14.0, "temp": 36.5,
+      "durationElapsed": "03h 10m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-06", "model": "Nipro Surdial X", "serial": "NIP-SUR-773103",
+      "room": "ROOM_B", "bed": "Poste 06", "status": "ALARM", "sessionActive": true, "patientId": "P-7721",
+      "hours": 5680, "sessions": 1610, "alarms30d": 18, "nextMaintenanceDays": 32, "healthScore": 78,
+      "healthBreakdown": { "reliability": 80, "alarmHistory": 68, "maintenance": 89, "stability": 74, "utilization": 79 },
+      "bfr": 320, "ufr": 400, "ufv": 1.10, "targetUfv": 2.5, "part": -150, "pven": 218, "tmp": 185, "cond": 14.0, "temp": 36.5,
+      "currentAlarm": { "id": "ALM-06-VEN", "type": "Pression Veineuse Haute (Pven > 200 mmHg)", "priority": "HIGH", "timestamp": "22:42:15", "duration": "3 min 12 s" },
+      "durationElapsed": "01h 50m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-07", "model": "Fresenius Medical Care 5008S CorDiax", "serial": "FMC-5008-883498",
+      "room": "ROOM_B", "bed": "Poste 07", "status": "NORMAL", "sessionActive": true, "patientId": "P-8492",
+      "hours": 7120, "sessions": 2010, "alarms30d": 6, "nextMaintenanceDays": 55, "healthScore": 95,
+      "healthBreakdown": { "reliability": 96, "alarmHistory": 94, "maintenance": 96, "stability": 95, "utilization": 93 },
+      "bfr": 350, "ufr": 650, "ufv": 2.30, "targetUfv": 2.5, "part": -135, "pven": 152, "tmp": 102, "cond": 14.0, "temp": 36.5,
+      "durationElapsed": "03h 35m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-08", "model": "Fresenius Medical Care 5008S CorDiax", "serial": "FMC-5008-883499",
+      "room": "ROOM_B", "bed": "Poste 08", "status": "MONITORING", "sessionActive": true, "patientId": "P-4402",
+      "hours": 6850, "sessions": 1910, "alarms30d": 9, "nextMaintenanceDays": 40, "healthScore": 88,
+      "healthBreakdown": { "reliability": 89, "alarmHistory": 84, "maintenance": 91, "stability": 86, "utilization": 90 },
+      "bfr": 280, "ufr": 500, "ufv": 1.25, "targetUfv": 2.0, "part": -185, "pven": 140, "tmp": 90, "cond": 14.0, "temp": 36.5,
+      "trendWarning": "Pression artérielle excessivement négative (-185 mmHg) - Débit FAV limite",
+      "durationElapsed": "02h 15m", "durationTotal": "04h 00m"
+    },
+    {
+      "id": "HD-09", "model": "Gambro AK 98", "serial": "GAM-AK-302190",
+      "room": "ICU", "bed": "Soins Critiques 01", "status": "NORMAL", "sessionActive": true, "patientId": "P-ICU-01",
+      "hours": 4120, "sessions": 1140, "alarms30d": 3, "nextMaintenanceDays": 80, "healthScore": 98,
+      "healthBreakdown": { "reliability": 99, "alarmHistory": 98, "maintenance": 99, "stability": 97, "utilization": 97 },
+      "bfr": 250, "ufr": 300, "ufv": 0.90, "targetUfv": 1.5, "part": -95, "pven": 120, "tmp": 80, "cond": 13.9, "temp": 36.5,
+      "durationElapsed": "03h 00m", "durationTotal": "05h 00m"
+    },
+    {
+      "id": "HD-10", "model": "Gambro AK 98", "serial": "GAM-AK-302191",
+      "room": "ICU", "bed": "Soins Critiques 02", "status": "NORMAL", "sessionActive": true, "patientId": "P-ICU-02",
+      "hours": 4350, "sessions": 1200, "alarms30d": 5, "nextMaintenanceDays": 75, "healthScore": 96,
+      "healthBreakdown": { "reliability": 97, "alarmHistory": 95, "maintenance": 98, "stability": 95, "utilization": 95 },
+      "bfr": 260, "ufr": 350, "ufv": 1.05, "targetUfv": 1.8, "part": -105, "pven": 125, "tmp": 85, "cond": 14.0, "temp": 36.5,
+      "durationElapsed": "03h 10m", "durationTotal": "05h 00m"
+    },
+    {
+      "id": "HD-11", "model": "Fresenius Medical Care 5008S CorDiax", "serial": "FMC-5008-883501",
+      "room": "ICU", "bed": "Soins Critiques 03", "status": "OFFLINE", "sessionActive": false, "patientId": null,
+      "hours": 8940, "sessions": 2490, "alarms30d": 7, "nextMaintenanceDays": 0, "healthScore": 82,
+      "healthBreakdown": { "reliability": 86, "alarmHistory": 84, "maintenance": 72, "stability": 85, "utilization": 83 },
+      "bfr": null, "ufr": null, "ufv": null, "targetUfv": null, "part": null, "pven": null, "tmp": null, "cond": null, "temp": null,
+      "durationElapsed": "-", "durationTotal": "-"
+    },
+    {
+      "id": "HD-12", "model": "Baxter Artis Physio", "serial": "BAX-ART-104929",
+      "room": "ICU", "bed": "Soins Critiques 04", "status": "NORMAL", "sessionActive": false, "patientId": null,
+      "hours": 5120, "sessions": 1420, "alarms30d": 2, "nextMaintenanceDays": 110, "healthScore": 98,
+      "healthBreakdown": { "reliability": 99, "alarmHistory": 99, "maintenance": 98, "stability": 98, "utilization": 96 },
+      "bfr": null, "ufr": null, "ufv": null, "targetUfv": null, "part": null, "pven": null, "tmp": null, "cond": null, "temp": null,
+      "durationElapsed": "-", "durationTotal": "-"
+    }
+  ],
+  "audit": [
+    { "time": "22:42:15", "user": "SYSTEM / SENSOR", "machine": "HD-06", "action": "Dépassement seuil Pven (>200 mmHg)", "data": "Pven=218 mmHg", "ai": "AlarmAI classifiée HIGH", "network": "READ-ONLY" },
+    { "time": "22:42:18", "user": "HADJ AI COPILOT", "machine": "HD-06", "action": "Génération explication clinique 7-points", "data": "Checklist protocole générée", "ai": "Priorité Élevée - Vérif Aiguille", "network": "AUCUN CONTRÔLE MACHINE" },
+    { "time": "22:44:02", "user": "Dr. Néphrologue", "machine": "HD-06", "action": "Consultation dossier machine & tendances", "data": "Affichage courbe télémétrique", "ai": "Recommandation consultée", "network": "READ-ONLY" },
+    { "time": "22:46:20", "user": "Infirmier_SalleB", "machine": "HD-06", "action": "Examen visuel fistule & tubulure veineuse", "data": "Observation : tubulure pliée sous drap", "ai": "Corrélation validée", "network": "ACTION PHYSIQUE SOIGNANT" }
+  ]
+}

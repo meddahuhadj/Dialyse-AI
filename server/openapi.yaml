@@ -1,0 +1,381 @@
+openapi: 3.0.3
+info:
+  title: HADJ Dialysis Intelligence — Fleet & Audit API
+  version: 0.1.0
+  description: >
+    Phase 1 backend for the HADJ Dialysis Intelligence Platform. Replaces the front-end's
+    hardcoded `FLEET` / `AUDIT_LOG` constants with an HTTP API backed by SQLite.
+    The audit trail is persistent (survives restarts). Telemetry values evolve server-side
+    on a fixed tick, so polling `GET /api/fleet` returns fresh data.
+servers:
+  - url: http://localhost:4310
+    description: Local development
+
+security:
+  - bearerAuth: []
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Authentification (JWT)
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [id, password]
+              properties:
+                id: { type: string, example: nephro }
+                password: { type: string, example: hadj-nephro }
+      responses:
+        '200':
+          description: Jeton + identité
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token: { type: string }
+                  expiresInSec: { type: integer, example: 28800 }
+                  user:
+                    type: object
+                    properties:
+                      id: { type: string }
+                      name: { type: string }
+                      role: { type: string, enum: [ADMIN, NEPHROLOGIST, NURSE, TECHNICIAN, AUDITOR, TRAINING] }
+                      permissions: { type: array, items: { type: string } }
+        '401': { description: identifiants invalides }
+        '429': { description: trop de tentatives }
+
+  /api/auth/me:
+    get:
+      summary: Identité + permissions du porteur du jeton
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id: { type: string }
+                  name: { type: string }
+                  role: { type: string }
+                  permissions: { type: array, items: { type: string } }
+                  exp: { type: integer }
+        '401': { description: jeton absent / invalide / expiré }
+
+  /api/audit/verify:
+    get:
+      summary: Vérifie la chaîne de hachage de l'audit trail
+      description: Permission `audit:verify` (ADMIN, AUDITOR).
+      responses:
+        '200':
+          description: Résultat
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  ok: { type: boolean }
+                  count: { type: integer }
+                  brokenAt: { type: integer, nullable: true }
+        '403': { description: permission refusée }
+
+  /api/config/gemini-key:
+    get:
+      summary: Statut de la clé Gemini (jamais la valeur)
+      description: Permission `config:read`.
+      responses:
+        '200':
+          description: Statut
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  configured: { type: boolean }
+                  updated_at: { type: string, format: date-time, nullable: true }
+    put:
+      summary: Enregistre la clé Gemini (coffre-fort serveur, AES-256-GCM)
+      description: Permission `config:write` (ADMIN).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [key]
+              properties:
+                key: { type: string }
+      responses:
+        '200': { description: 'configured: true' }
+        '400': { description: clé invalide }
+        '403': { description: permission refusée }
+    delete:
+      summary: Supprime la clé Gemini
+      description: Permission `config:write`.
+      responses:
+        '200': { description: 'configured: false' }
+
+  /api/health:
+    get:
+      summary: Liveness / basic runtime info
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status: { type: string, example: ok }
+                  fleet: { type: integer, example: 12 }
+                  tickMs: { type: integer, example: 2000 }
+                  uptimeSec: { type: integer, example: 42 }
+
+  /api/fleet:
+    get:
+      summary: Liste complète des générateurs
+      description: Renvoie le tableau des machines, structure identique à l'ancienne constante `FLEET`.
+      responses:
+        '200':
+          description: Tableau de machines
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Machine' }
+
+  /api/fleet/{id}:
+    get:
+      summary: Détail d'une machine
+      parameters:
+        - $ref: '#/components/parameters/MachineId'
+      responses:
+        '200':
+          description: Machine
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Machine' }
+        '404':
+          description: Machine introuvable
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/connectors:
+    get:
+      summary: État des sources de données live (Phase 3)
+      description: >
+        Une ligne par machine ayant un binding non-simulateur dans
+        connectors.config.json. `live` = une lecture est arrivée depuis moins de
+        `staleMs`. Tableau vide si aucune source live n'est configurée.
+      responses:
+        '200':
+          description: Statut par machine
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/ConnectorStatus' }
+
+  /api/connectors/catalogue:
+    get:
+      summary: Catalogue des adaptateurs et modèles supportés
+      responses:
+        '200':
+          description: Adaptateurs + modèles
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  adapters:
+                    type: array
+                    items: { type: string }
+                    example: [simulator, hl7v2, fhir, tcp-ascii, file-poll, serial, modbus-tcp, opcua]
+                  models:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        key: { type: string, example: fresenius-5008 }
+                        vendor: { type: string }
+                        label: { type: string }
+                        recommendedAdapter: { type: string }
+                        nativeProtocols:
+                          type: array
+                          items: { type: string }
+
+  /api/fleet/{id}/alarms:
+    get:
+      summary: Historique des alarmes d'une machine
+      parameters:
+        - $ref: '#/components/parameters/MachineId'
+      responses:
+        '200':
+          description: Alarmes (plus récentes d'abord)
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/Alarm' }
+        '404':
+          description: Machine introuvable
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+  /api/audit:
+    get:
+      summary: Lecture du registre d'audit
+      parameters:
+        - name: limit
+          in: query
+          schema: { type: integer, minimum: 1, maximum: 1000, default: 200 }
+      responses:
+        '200':
+          description: Entrées d'audit (id décroissant = plus récentes d'abord)
+          content:
+            application/json:
+              schema:
+                type: array
+                items: { $ref: '#/components/schemas/AuditEntry' }
+    post:
+      summary: Ajout d'une entrée d'audit
+      description: Rend le registre persistant, contrairement à l'ancien tableau JS réinitialisé au rechargement.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: '#/components/schemas/AuditInput' }
+      responses:
+        '201':
+          description: Entrée créée
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/AuditEntry' }
+        '400':
+          description: Requête invalide
+          content:
+            application/json:
+              schema: { $ref: '#/components/schemas/Error' }
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  parameters:
+    MachineId:
+      name: id
+      in: path
+      required: true
+      schema: { type: string, example: HD-06 }
+      description: Identifiant machine (insensible à la casse)
+
+  schemas:
+    Error:
+      type: object
+      properties:
+        error: { type: string }
+
+    HealthBreakdown:
+      type: object
+      properties:
+        reliability: { type: number }
+        alarmHistory: { type: number }
+        maintenance: { type: number }
+        stability: { type: number }
+        utilization: { type: number }
+
+    CurrentAlarm:
+      type: object
+      properties:
+        id: { type: string, example: ALM-06-VEN }
+        type: { type: string }
+        priority: { type: string, example: HIGH }
+        timestamp: { type: string, example: '22:42:15' }
+        duration: { type: string, example: '3 min 12 s' }
+
+    Machine:
+      type: object
+      description: Schéma possédé par le front-end. Champs additionnels tolérés.
+      required: [id, model, serial, room, bed, status, sessionActive]
+      properties:
+        id: { type: string, example: HD-06 }
+        model: { type: string, example: Nipro Surdial X }
+        serial: { type: string, example: NIP-SUR-773103 }
+        room: { type: string, enum: [ROOM_A, ROOM_B, ICU], example: ROOM_B }
+        bed: { type: string, example: Poste 06 }
+        status: { type: string, enum: [NORMAL, MONITORING, WARNING, ALARM, OFFLINE] }
+        sessionActive: { type: boolean }
+        patientId: { type: string, nullable: true, example: P-7721 }
+        hours: { type: integer }
+        sessions: { type: integer }
+        alarms30d: { type: integer }
+        nextMaintenanceDays: { type: integer }
+        healthScore: { type: number }
+        healthBreakdown: { $ref: '#/components/schemas/HealthBreakdown' }
+        bfr: { type: number, nullable: true }
+        ufr: { type: number, nullable: true }
+        ufv: { type: number, nullable: true }
+        targetUfv: { type: number, nullable: true }
+        part: { type: number, nullable: true }
+        pven: { type: number, nullable: true }
+        tmp: { type: number, nullable: true }
+        cond: { type: number, nullable: true }
+        temp: { type: number, nullable: true }
+        currentAlarm: { $ref: '#/components/schemas/CurrentAlarm' }
+        trendWarning: { type: string }
+        durationElapsed: { type: string, example: '01h 50m' }
+        durationTotal: { type: string, example: '04h 00m' }
+
+    ConnectorStatus:
+      type: object
+      properties:
+        machineId: { type: string, example: HD-02 }
+        adapter: { type: string, example: tcp-ascii }
+        model: { type: string, example: baxter-artis }
+        modelLabel: { type: string }
+        connected: { type: boolean, description: 'transport (socket/session) ouvert' }
+        live: { type: boolean, description: 'une lecture reçue depuis moins de staleMs' }
+        lastReadingAt: { type: string, format: date-time, nullable: true }
+        ageSec: { type: integer, nullable: true }
+        lastError: { type: string, nullable: true }
+
+    Alarm:
+      type: object
+      properties:
+        id: { type: string, example: ALM-06-VEN }
+        type: { type: string }
+        priority: { type: string, example: HIGH }
+        timestamp: { type: string, nullable: true }
+        duration: { type: string, nullable: true }
+        status: { type: string, enum: [ACTIVE, MONITORING, RESOLVED] }
+        note: { type: string, nullable: true }
+
+    AuditInput:
+      type: object
+      required: [action]
+      properties:
+        action: { type: string, example: COPILOT_VOICE_QUERY }
+        user: { type: string, example: NEPHROLOGIST }
+        machine: { type: string, example: HD-06 }
+        data: { type: string }
+        ai: { type: string }
+        network: { type: string }
+        time: { type: string, example: '14:07:32' }
+
+    AuditEntry:
+      allOf:
+        - $ref: '#/components/schemas/AuditInput'
+        - type: object
+          properties:
+            id: { type: integer }
+            created_at: { type: string, format: date-time }

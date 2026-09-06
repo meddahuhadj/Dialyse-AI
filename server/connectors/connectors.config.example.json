@@ -1,0 +1,105 @@
+{
+  "_comment": "Copiez ce fichier en connectors.config.json et adaptez. Sans connectors.config.json, HADJ démarre 100% simulé. Chaque binding non-simulator bascule la machine sur la source live dès qu'une lecture arrive ; retour auto au simulateur après staleMs sans donnée.",
+  "defaultSimulator": true,
+  "staleMs": 15000,
+  "bindings": [
+    {
+      "machineId": "HD-01",
+      "model": "Fresenius Medical Care 5008S CorDiax",
+      "adapter": "hl7v2",
+      "params": {
+        "port": 2575,
+        "deviceMatch": "HD-01",
+        "ack": true
+      }
+    },
+    {
+      "machineId": "HD-03",
+      "model": "Baxter Artis Physio",
+      "adapter": "tcp-ascii",
+      "params": {
+        "host": "10.20.0.13",
+        "port": 5000,
+        "delimiter": "\r\n",
+        "format": "kv",
+        "pairDelim": ";",
+        "kvDelim": "=",
+        "alarmKeys": ["ALARM", "ALM_TXT"]
+      }
+    },
+    {
+      "machineId": "HD-05",
+      "model": "Nipro Surdial X",
+      "adapter": "serial",
+      "params": {
+        "path": "COM5",
+        "baudRate": 9600,
+        "delimiter": "\r\n",
+        "format": "kv",
+        "pairDelim": ",",
+        "kvDelim": ":"
+      }
+    },
+    {
+      "machineId": "HD-07",
+      "model": "Fresenius 6008 CAREsystem",
+      "adapter": "fhir",
+      "params": {
+        "baseUrl": "https://fhir.chu-medical.fr/r4",
+        "deviceId": "hd-07",
+        "periodMs": 5000
+      }
+    },
+    {
+      "machineId": "HD-09",
+      "model": "Gambro AK 98",
+      "adapter": "file-poll",
+      "params": {
+        "dir": "\\\\tdms-server\\exports\\AK98",
+        "match": ".csv",
+        "format": "csv",
+        "delimiter": ";",
+        "machineField": "device_id",
+        "row": "last",
+        "periodMs": 10000,
+        "alarmKeys": ["alarm_text"]
+      }
+    },
+    {
+      "machineId": "HD-10",
+      "model": "B. Braun Dialog iQ",
+      "adapter": "modbus-tcp",
+      "params": {
+        "host": "10.20.0.110",
+        "port": 502,
+        "unitId": 1,
+        "periodMs": 3000,
+        "registers": {
+          "blood_flow": { "addr": 40001, "type": "holding", "scale": 1 },
+          "venous_pressure": { "addr": 40002, "type": "holding", "scale": 1, "signed": true },
+          "arterial_pressure": { "addr": 40003, "type": "holding", "scale": 1, "signed": true },
+          "tmp": { "addr": 40004, "type": "holding", "scale": 1 },
+          "uf_volume": { "addr": 40010, "type": "holding", "scale": 0.01 }
+        },
+        "alarmRegister": { "addr": 40050, "type": "input" }
+      }
+    },
+    {
+      "machineId": "HD-11",
+      "model": "Fresenius 6008 CAREsystem",
+      "adapter": "opcua",
+      "params": {
+        "endpoint": "opc.tcp://10.20.0.111:4840",
+        "periodMs": 2000,
+        "nodes": {
+          "blood_flow": "ns=2;s=HD11.BloodFlow",
+          "venous_pressure": "ns=2;s=HD11.VenousPressure",
+          "tmp": "ns=2;s=HD11.TMP",
+          "uf_volume": "ns=2;s=HD11.UFVolume",
+          "machine_state": "ns=2;s=HD11.TreatmentPhase"
+        },
+        "alarmNode": "ns=2;s=HD11.ActiveAlarmText"
+      }
+    }
+  ]
+}

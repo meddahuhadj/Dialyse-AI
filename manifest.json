@@ -1,0 +1,28 @@
+{
+  "name": "HADJ – Dialysis Intelligence Platform",
+  "short_name": "HADJ Dialysis",
+  "description": "Copilote IA pour l'hémodialyse, jumeaux numériques de générateurs, alertes cliniques et maintenance prédictive.",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#070b13",
+  "theme_color": "#0284c7",
+  "lang": "fr",
+  "categories": ["medical", "health", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon-192.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/icons/icon-512.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

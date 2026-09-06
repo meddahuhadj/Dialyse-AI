@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#070b13"/>
+      <stop offset="50%" stop-color="#0c192c"/>
+      <stop offset="100%" stop-color="#0284c7"/>
+    </linearGradient>
+    <linearGradient id="dialysateGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#06b6d4"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+  
+  <!-- Background squircle -->
+  <rect width="512" height="512" rx="112" fill="url(#bg)"/>
+  <rect width="504" height="504" x="4" y="4" rx="108" fill="none" stroke="#38bdf8" stroke-width="4" stroke-opacity="0.35"/>
+
+  <!-- Dialysis machine & twin core motif -->
+  <g transform="translate(256, 224)">
+    <!-- Central Dialyzer Filter Cartridge -->
+    <rect x="-42" y="-120" width="84" height="240" rx="20" fill="#0f172a" stroke="#38bdf8" stroke-width="6"/>
+    
+    <!-- Semipermeable hollow fibers -->
+    <line x1="-20" y1="-85" x2="-20" y2="85" stroke="#0284c7" stroke-width="4" stroke-linecap="round" stroke-opacity="0.7"/>
+    <line x1="0" y1="-95" x2="0" y2="95" stroke="#38bdf8" stroke-width="5" stroke-linecap="round"/>
+    <line x1="20" y1="-85" x2="20" y2="85" stroke="#0284c7" stroke-width="4" stroke-linecap="round" stroke-opacity="0.7"/>
+
+    <!-- Arterial / Venous blood ports -->
+    <path d="M-18 -120 L-18 -150 L18 -150 L18 -120" fill="none" stroke="#ef4444" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="0" cy="-155" r="7" fill="#ef4444"/>
+    <path d="M-18 120 L-18 150 L18 150 L18 120" fill="none" stroke="#3b82f6" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="0" cy="155" r="7" fill="#3b82f6"/>
+
+    <!-- Dialysate ports -->
+    <path d="M-42 -45 L-74 -45" stroke="#10b981" stroke-width="7" stroke-linecap="round"/>
+    <path d="M42 45 L74 45" stroke="#06b6d4" stroke-width="7" stroke-linecap="round"/>
+
+    <!-- Dynamic AI Pulse wave -->
+    <path d="M-170 0 Q-120 -15 -80 0 L-36 0 L-18 -45 L0 55 L18 -65 L36 0 L80 0 Q120 15 170 0" fill="none" stroke="url(#dialysateGrad)" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" filter="url(#glow)"/>
+    
+    <!-- AI Core node -->
+    <circle cx="0" cy="0" r="13" fill="#10b981"/>
+    <circle cx="0" cy="0" r="22" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="4,4"/>
+  </g>
+
+  <!-- Typography -->
+  <text x="256" y="425" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="40" font-weight="800" letter-spacing="3" fill="#f8fafc" text-anchor="middle">HADJ AI</text>
+  <text x="256" y="460" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" font-size="16" font-weight="700" letter-spacing="4" fill="#38bdf8" text-anchor="middle">DIALYSIS INTELLIGENCE</text>
+</svg>

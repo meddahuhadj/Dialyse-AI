@@ -1,0 +1,30 @@
+{
+  "name": "hadj-fleet-api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "description": "HADJ Dialysis Intelligence — backend: fleet + audit + connecteurs + sécurité (SQLite)",
+  "main": "index.js",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js",
+    "seed": "node seed.js",
+    "seed:force": "node seed.js --force",
+    "users": "node scripts/set-password.js --list",
+    "harden": "node scripts/set-password.js --remove-demo"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^4.21.2",
+    "swagger-ui-express": "^5.0.1",
+    "yaml": "^2.6.1"
+  },
+  "optionalDependencies": {
+    "serialport": "^12.0.0",
+    "modbus-serial": "^8.0.17",
+    "node-opcua": "^2.133.0"
+  }
+}

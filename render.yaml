@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: hadj-dialyse-ai
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm run build
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: 22.12.0
+      - key: HADJ_CORS_ORIGINS
+        value: "*"

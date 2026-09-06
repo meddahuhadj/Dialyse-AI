@@ -1,0 +1,7 @@
+[
+  { "id": "admin",   "name": "Administrateur Clinique",  "role": "ADMIN",        "password": "hadj-admin",   "pin": "1234" },
+  { "id": "nephro",  "name": "Dr. Néphrologue",          "role": "NEPHROLOGIST", "password": "hadj-nephro",  "pin": "1234" },
+  { "id": "nurse",   "name": "Infirmier de Dialyse",     "role": "NURSE",        "password": "hadj-nurse",   "pin": "1234" },
+  { "id": "tech",    "name": "Ingénieur Biomédical",     "role": "TECHNICIAN",   "password": "hadj-tech",    "pin": "1234" },
+  { "id": "auditor", "name": "Auditeur Qualité",         "role": "AUDITOR",      "password": "hadj-auditor", "pin": "1234" }
+]
