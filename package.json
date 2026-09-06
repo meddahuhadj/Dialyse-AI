@@ -7,10 +7,10 @@
     "node": ">=22.5.0"
   },
   "scripts": {
-    "start": "node server/index.js",
-    "dev": "node --watch server/index.js",
+    "start": "node --experimental-sqlite server/index.js",
+    "dev": "node --experimental-sqlite --watch server/index.js",
     "build": "npm install && cd server && npm install",
-    "seed": "node server/seed.js"
+    "seed": "node --experimental-sqlite server/seed.js"
   },
   "dependencies": {
     "cors": "^2.8.5",

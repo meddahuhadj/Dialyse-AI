@@ -9,12 +9,12 @@
     "node": ">=22.5"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node --watch index.js",
-    "seed": "node seed.js",
-    "seed:force": "node seed.js --force",
-    "users": "node scripts/set-password.js --list",
-    "harden": "node scripts/set-password.js --remove-demo"
+    "start": "node --experimental-sqlite index.js",
+    "dev": "node --experimental-sqlite --watch index.js",
+    "seed": "node --experimental-sqlite seed.js",
+    "seed:force": "node --experimental-sqlite seed.js --force",
+    "users": "node --experimental-sqlite scripts/set-password.js --list",
+    "harden": "node --experimental-sqlite scripts/set-password.js --remove-demo"
   },
   "dependencies": {
     "cors": "^2.8.5",
