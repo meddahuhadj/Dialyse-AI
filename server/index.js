@@ -288,7 +288,8 @@ app.get('/api/fleet/:id/health', requirePerm('fleet:read'), (req, res) => {
 // Production readiness — "what's left before going real". Admin only (reveals
 // security posture). See readiness.js and server/GO-LIVE.md.
 app.get('/api/readiness', requirePerm('users:manage'), (req, res) => {
-  res.json(readiness.computeReadiness(fleet, devices, connectors.snapshot()));
+  const httpsAtEdge = req.secure || req.headers['x-forwarded-proto'] === 'https';
+  res.json(readiness.computeReadiness(fleet, devices, connectors.snapshot(), { httpsAtEdge }));
 });
 
 // End-of-shift report — structured aggregation + copy-ready narrative. See shift-report.js.

@@ -16,16 +16,22 @@ const DEMO_USERS = ['admin', 'nephro', 'nurse', 'tech', 'auditor'];
 
 function fileExists(p) { try { return fs.existsSync(p); } catch { return false; } }
 
-function computeReadiness(fleet, devices, connectorsSnapshot) {
+function computeReadiness(fleet, devices, connectorsSnapshot, opts = {}) {
   const checks = [];
   const add = (id, label, severity, status, detail, fix) => checks.push({ id, label, severity, status, detail, fix });
 
   // --- TLS ---
-  const tls = fileExists(path.join(CERT_DIR, 'key.pem')) && fileExists(path.join(CERT_DIR, 'cert.pem'));
-  add('tls', 'HTTPS / TLS', tls ? 'ok' : 'critical',
-    tls ? 'Certificats présents' : 'HTTP en clair',
-    tls ? `certs/ dans ${CERT_DIR}` : 'Le trafic (jetons, données) circule en clair.',
-    tls ? null : 'Placer certs/key.pem + certs/cert.pem (scripts/gen-cert.*) ou terminer le TLS sur un reverse-proxy (nginx/traefik + ACME).');
+  // OK when this process serves HTTPS directly (local certs), OR when TLS is
+  // terminated upstream by a reverse-proxy / platform (Render, nginx, Traefik…)
+  // — detected from the request (x-forwarded-proto) or declared via
+  // HADJ_TLS_TERMINATED_UPSTREAM=1.
+  const localCerts = fileExists(path.join(CERT_DIR, 'key.pem')) && fileExists(path.join(CERT_DIR, 'cert.pem'));
+  const edgeTls = !!opts.httpsAtEdge || ['1', 'true', 'yes'].includes(String(process.env.HADJ_TLS_TERMINATED_UPSTREAM || '').toLowerCase());
+  const tlsOk = localCerts || edgeTls;
+  add('tls', 'HTTPS / TLS', tlsOk ? 'ok' : 'critical',
+    localCerts ? 'Certificats locaux présents' : edgeTls ? 'TLS terminé en amont (proxy/plateforme)' : 'HTTP en clair',
+    localCerts ? `certs/ dans ${CERT_DIR}` : edgeTls ? 'Le proxy/hébergeur chiffre le trafic client. Vérifier que le lien proxy↔serveur est isolé (réseau privé).' : 'Le trafic (jetons, données) circule en clair.',
+    tlsOk ? null : 'Placer certs/key.pem + certs/cert.pem (scripts/gen-cert.*), OU terminer le TLS sur un reverse-proxy/plateforme puis définir HADJ_TLS_TERMINATED_UPSTREAM=1.');
 
   // --- JWT signing secret ---
   const jwtEnv = !!process.env.HADJ_JWT_SECRET;
